@@ -1,0 +1,1 @@
+Fully Kiosk Browser integration for Home Assistant

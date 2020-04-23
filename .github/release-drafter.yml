@@ -1,0 +1,9 @@
+change-template: "- #$NUMBER - $TITLE (@$AUTHOR)"
+categories:
+  - title: ":warning: Breaking Changes"
+    labels:
+      - "breaking change"
+template: |
+  ## What’s Changed
+
+  $CHANGES
