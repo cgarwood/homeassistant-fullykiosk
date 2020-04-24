@@ -25,24 +25,15 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 
     sensors = []
 
-    device_info = {
-        "identifiers": {(DOMAIN, coordinator.data["deviceID"])},
-        "name": coordinator.data["deviceName"],
-        "manufacturer": coordinator.data["deviceManufacturer"],
-        "model": coordinator.data["deviceModel"],
-        "sw_version": coordinator.data["appVersionName"],
-    }
-
     for sensor in SENSOR_TYPES:
-        sensors.append(FullySensor(coordinator, sensor, device_info))
+        sensors.append(FullySensor(coordinator, sensor))
 
     async_add_entities(sensors, False)
 
 
 class FullySensor(Entity):
-    def __init__(self, coordinator, sensor, device_info):
+    def __init__(self, coordinator, sensor):
         self._name = f"{coordinator.data['deviceName']} {SENSOR_TYPES[sensor]}"
-        self._device_info = device_info
         self._sensor = sensor
         self.coordinator = coordinator
         self._unique_id = f"{coordinator.data['deviceID']}-{sensor}"
@@ -63,7 +54,13 @@ class FullySensor(Entity):
 
     @property
     def device_info(self):
-        return self._device_info
+        return {
+            "identifiers": {(DOMAIN, self.coordinator.data["deviceID"])},
+            "name": self.coordinator.data["deviceName"],
+            "manufacturer": self.coordinator.data["deviceManufacturer"],
+            "model": self.coordinator.data["deviceModel"],
+            "sw_version": self.coordinator.data["appVersionName"],
+        }
 
     @property
     def unique_id(self):

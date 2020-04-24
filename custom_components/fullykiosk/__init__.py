@@ -42,7 +42,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     async def async_update_data():
         """Fetch data from REST API."""
         data = await hass.async_add_executor_job(fully.getDeviceInfo)
-        _LOGGER.info("Got data: %s", data)
         return data
 
     coordinator = DataUpdateCoordinator(

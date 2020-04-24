@@ -19,21 +19,12 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     coordinator = hass.data[DOMAIN][config_entry.entry_id][COORDINATOR]
     controller = hass.data[DOMAIN][config_entry.entry_id][CONTROLLER]
 
-    device_info = {
-        "identifiers": {(DOMAIN, coordinator.data["deviceID"])},
-        "name": coordinator.data["deviceName"],
-        "manufacturer": coordinator.data["deviceManufacturer"],
-        "model": coordinator.data["deviceModel"],
-        "sw_version": coordinator.data["appVersionName"],
-    }
-
-    async_add_entities([FullyMediaPlayer(coordinator, controller, device_info)], False)
+    async_add_entities([FullyMediaPlayer(coordinator, controller)], False)
 
 
 class FullyMediaPlayer(MediaPlayerDevice):
-    def __init__(self, coordinator, controller, device_info):
+    def __init__(self, coordinator, controller):
         self._name = f"{coordinator.data['deviceName']} Media Player"
-        self._device_info = device_info
         self.coordinator = coordinator
         self.controller = controller
         self._unique_id = f"{coordinator.data['deviceID']}-mediaplayer"
@@ -48,7 +39,13 @@ class FullyMediaPlayer(MediaPlayerDevice):
 
     @property
     def device_info(self):
-        return self._device_info
+        return {
+            "identifiers": {(DOMAIN, self.coordinator.data["deviceID"])},
+            "name": self.coordinator.data["deviceName"],
+            "manufacturer": self.coordinator.data["deviceManufacturer"],
+            "model": self.coordinator.data["deviceModel"],
+            "sw_version": self.coordinator.data["appVersionName"],
+        }
 
     @property
     def unique_id(self):
