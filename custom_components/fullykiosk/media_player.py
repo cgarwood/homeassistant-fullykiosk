@@ -52,7 +52,6 @@ class FullyMediaPlayer(MediaPlayerDevice):
         return self._unique_id
 
     def play_media(self, media_type, media_id, **kwargs):
-        _LOGGER.warning("play media: %s :: %s", media_type, media_id)
         self.controller.playSound(media_id)
 
     async def async_added_to_hass(self):
