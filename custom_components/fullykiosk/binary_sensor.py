@@ -2,7 +2,7 @@
 import logging
 
 from homeassistant.components.binary_sensor import BinarySensorDevice
-from homeassistant.const import DEVICE_CLASS_BATTERY
+from homeassistant.const import DEVICE_CLASS_PLUG
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 
 from .const import DOMAIN, COORDINATOR, CONTROLLER
@@ -12,7 +12,7 @@ _LOGGER = logging.getLogger(__name__)
 SENSOR_TYPES = {
     "kioskMode": "Kiosk Mode",
     "kioskLocked": "Kiosk Locked",
-    "plugged": "Pluggin In",
+    "plugged": "Plugged In",
     "isDeviceAdmin": "Device Admin",
 }
 
@@ -46,8 +46,8 @@ class FullyBinarySensor(BinarySensorDevice):
 
     @property
     def device_class(self):
-        if self._sensor == "batteryLevel":
-            return DEVICE_CLASS_BATTERY
+        if self._sensor == "plugged":
+            return DEVICE_CLASS_PLUG
         return None
 
     @property
