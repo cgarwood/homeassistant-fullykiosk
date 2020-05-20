@@ -1,8 +1,7 @@
 """Fully Kiosk Browser sensor."""
 import logging
 
-from homeassistant.components.binary_sensor import BinarySensorDevice
-from homeassistant.const import DEVICE_CLASS_PLUG
+from homeassistant.components.binary_sensor import BinarySensorDevice, DEVICE_CLASS_PLUG
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 
 from .const import DOMAIN, COORDINATOR, CONTROLLER
