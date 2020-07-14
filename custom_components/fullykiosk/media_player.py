@@ -5,7 +5,7 @@ import logging
 from homeassistant.components.media_player import (
     DEVICE_CLASS_SPEAKER,
     SUPPORT_PLAY_MEDIA,
-    MediaPlayerDevice,
+    MediaPlayerEntity,
 )
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 
