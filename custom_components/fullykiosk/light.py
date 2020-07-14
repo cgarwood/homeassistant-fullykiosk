@@ -17,7 +17,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     async_add_entities([FullyLight(coordinator, controller)], False)
 
 
-class FullyLight(Light):
+class FullyLight(LightEntity):
     def __init__(self, coordinator, controller):
         self._name = f"{coordinator.data['deviceName']} Screen"
         self.coordinator = coordinator

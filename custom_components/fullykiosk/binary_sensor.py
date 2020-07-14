@@ -28,7 +28,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     async_add_entities(sensors, False)
 
 
-class FullyBinarySensor(BinarySensorDevice):
+class FullyBinarySensor(BinarySensorEntity):
     def __init__(self, coordinator, sensor):
         self._name = f"{coordinator.data['deviceName']} {SENSOR_TYPES[sensor]}"
         self._sensor = sensor
