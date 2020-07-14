@@ -1,7 +1,7 @@
 """Fully Kiosk Browser switch."""
 import logging
 
-from homeassistant.components.switch import SwitchDevice
+from homeassistant.components.switch import SwitchEntity
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 
 from .const import DOMAIN, COORDINATOR, CONTROLLER
@@ -18,7 +18,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     async_add_entities([FullyScreenSaverSwitch(coordinator, controller)], False)
 
 
-class FullyScreenSaverSwitch(SwitchDevice):
+class FullyScreenSaverSwitch(SwitchEntity):
     def __init__(self, coordinator, controller):
         self._name = f"{coordinator.data['deviceName']} Screensaver"
         self.coordinator = coordinator

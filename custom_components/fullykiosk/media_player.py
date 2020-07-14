@@ -5,7 +5,7 @@ import logging
 from homeassistant.components.media_player import (
     DEVICE_CLASS_SPEAKER,
     SUPPORT_PLAY_MEDIA,
-    MediaPlayerDevice,
+    MediaPlayerEntity,
 )
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 
@@ -22,7 +22,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     async_add_entities([FullyMediaPlayer(coordinator, controller)], False)
 
 
-class FullyMediaPlayer(MediaPlayerDevice):
+class FullyMediaPlayer(MediaPlayerEntity):
     def __init__(self, coordinator, controller):
         self._name = f"{coordinator.data['deviceName']} Media Player"
         self.coordinator = coordinator

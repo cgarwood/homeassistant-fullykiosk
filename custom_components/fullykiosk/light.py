@@ -1,7 +1,11 @@
 """Fully Kiosk Browser light entity for controlling screen brightness & on/off."""
 import logging
 
-from homeassistant.components.light import ATTR_BRIGHTNESS, Light, SUPPORT_BRIGHTNESS
+from homeassistant.components.light import (
+    ATTR_BRIGHTNESS,
+    LightEntity,
+    SUPPORT_BRIGHTNESS,
+)
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 
 from .const import DOMAIN, COORDINATOR, CONTROLLER
@@ -17,7 +21,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     async_add_entities([FullyLight(coordinator, controller)], False)
 
 
-class FullyLight(Light):
+class FullyLight(LightEntity):
     def __init__(self, coordinator, controller):
         self._name = f"{coordinator.data['deviceName']} Screen"
         self.coordinator = coordinator
