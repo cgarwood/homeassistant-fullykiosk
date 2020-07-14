@@ -61,9 +61,9 @@ class FullyLight(LightEntity):
     def turn_on(self, **kwargs):
         self.controller.screenOn()
         brightness = kwargs.get(ATTR_BRIGHTNESS)
-        if brightness == None:
+        if brightness is None:
             return
-        if brightness != self._brightness:
+        if brightness != self.coordinator.data["screenBrightness"]:
             self.controller.setScreenBrightness(brightness)
 
     def turn_off(self, **kwargs):
