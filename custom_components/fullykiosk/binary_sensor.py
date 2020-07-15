@@ -2,9 +2,8 @@
 import logging
 
 from homeassistant.components.binary_sensor import BinarySensorEntity, DEVICE_CLASS_PLUG
-from homeassistant.helpers.dispatcher import async_dispatcher_connect
 
-from .const import DOMAIN, COORDINATOR, CONTROLLER
+from .const import DOMAIN, COORDINATOR
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -29,6 +28,8 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 
 
 class FullyBinarySensor(BinarySensorEntity):
+    """Representation of a Fully Kiosk Browser binary sensor."""
+
     def __init__(self, coordinator, sensor):
         self._name = f"{coordinator.data['deviceName']} {SENSOR_TYPES[sensor]}"
         self._sensor = sensor

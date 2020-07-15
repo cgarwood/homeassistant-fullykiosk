@@ -2,10 +2,9 @@
 import logging
 
 from homeassistant.const import DEVICE_CLASS_BATTERY
-from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity import Entity
 
-from .const import DOMAIN, COORDINATOR, CONTROLLER
+from .const import DOMAIN, COORDINATOR
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -32,6 +31,8 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 
 
 class FullySensor(Entity):
+    """Representation of a Fully Kiosk Browser sensor."""
+
     def __init__(self, coordinator, sensor):
         self._name = f"{coordinator.data['deviceName']} {SENSOR_TYPES[sensor]}"
         self._sensor = sensor

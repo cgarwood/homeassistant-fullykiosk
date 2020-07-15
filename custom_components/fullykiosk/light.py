@@ -6,7 +6,6 @@ from homeassistant.components.light import (
     LightEntity,
     SUPPORT_BRIGHTNESS,
 )
-from homeassistant.helpers.dispatcher import async_dispatcher_connect
 
 from .const import DOMAIN, COORDINATOR, CONTROLLER
 
@@ -22,6 +21,8 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 
 
 class FullyLight(LightEntity):
+    """Representation of a Fully Kiosk Browser light."""
+
     def __init__(self, coordinator, controller):
         self._name = f"{coordinator.data['deviceName']} Screen"
         self.coordinator = coordinator
