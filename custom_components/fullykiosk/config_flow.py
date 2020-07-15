@@ -6,12 +6,21 @@ import voluptuous as vol
 from fullykiosk import FullyKiosk
 
 from homeassistant import config_entries, core, exceptions
+from homeassistant.const import CONF_HOST, CONF_PORT, CONF_PASSWORD
 
 from .const import DOMAIN  # pylint:disable=unused-import
 
 _LOGGER = logging.getLogger(__name__)
 
-DATA_SCHEMA = vol.Schema({"host": str, "port": int, "password": str})
+DEFAULT_PORT = 2323
+
+DATA_SCHEMA = vol.Schema(
+    {
+        vol.Required(CONF_HOST): str,
+        vol.Required(CONF_PORT, default=DEFAULT_PORT): int,
+        vol.Required(CONF_PASSWORD): str,
+    }
+)
 
 
 class PlaceholderHub:
