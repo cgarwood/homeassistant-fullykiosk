@@ -3,10 +3,14 @@
 	"name": "Fully Kiosk Browser",
 	"config_flow": true,
 	"documentation": "https://www.home-assistant.io/integrations/fullykiosk",
-	"requirements": ["python-fullykiosk==0.0.3"],
+	"requirements": [
+		"python-fullykiosk==0.0.5"
+	],
 	"ssdp": [],
 	"zeroconf": [],
 	"homekit": {},
 	"dependencies": [],
-	"codeowners": ["@cgarwood"]
+	"codeowners": [
+		"@cgarwood"
+	]
 }

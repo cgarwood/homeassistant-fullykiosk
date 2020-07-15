@@ -13,25 +13,27 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     coordinator = hass.data[DOMAIN][config_entry.entry_id][COORDINATOR]
     controller = hass.data[DOMAIN][config_entry.entry_id][CONTROLLER]
 
-    async_add_entities([FullyScreenSaverSwitch(coordinator, controller)], False)
+    async_add_entities([FullyScreenSaverSwitch(hass, coordinator, controller)], False)
+    async_add_entities(
+        [FullyMaintenanceModeSwitch(hass, coordinator, controller)], False
+    )
+    async_add_entities([FullyKioskLockSwitch(hass, coordinator, controller)], False)
 
 
-class FullyScreenSaverSwitch(SwitchEntity):
-    """Representation of a Fully Kiosk Browser screensaver switch."""
+class FullySwitch(SwitchEntity):
+    """Representation of a generic Fully Kiosk Browser switch entity."""
 
-    def __init__(self, coordinator, controller):
-        self._name = f"{coordinator.data['deviceName']} Screensaver"
+    def __init__(self, hass, coordinator, controller):
         self.coordinator = coordinator
         self.controller = controller
-        self._unique_id = f"{coordinator.data['deviceID']}-screensaver"
+        self.hass = hass
+
+        self._name = ""
+        self._unique_id = ""
 
     @property
     def name(self):
         return self._name
-
-    @property
-    def is_on(self):
-        return self.coordinator.data["currentFragment"] == "screensaver"
 
     @property
     def device_info(self):
@@ -47,12 +49,6 @@ class FullyScreenSaverSwitch(SwitchEntity):
     def unique_id(self):
         return self._unique_id
 
-    def turn_on(self, **kwargs):
-        self.controller.startScreensaver()
-
-    def turn_off(self, **kwargs):
-        self.controller.stopScreensaver()
-
     async def async_added_to_hass(self):
         """Connect to dispatcher listening for entity data notifications."""
         self.async_on_remove(
@@ -62,3 +58,66 @@ class FullyScreenSaverSwitch(SwitchEntity):
     async def async_update(self):
         """Update Fully Kiosk Browser entity."""
         await self.coordinator.async_request_refresh()
+
+
+class FullyScreenSaverSwitch(FullySwitch):
+    """Representation of a Fully Kiosk Browser screensaver switch."""
+
+    def __init__(self, hass, coordinator, controller):
+        super().__init__(hass, coordinator, controller)
+        self._name = f"{coordinator.data['deviceName']} Screensaver"
+        self._unique_id = f"{coordinator.data['deviceID']}-screensaver"
+
+    @property
+    def is_on(self):
+        return self.coordinator.data["currentFragment"] == "screensaver"
+
+    async def async_turn_on(self, **kwargs):
+        await self.hass.async_add_executor_job(self.controller.startScreensaver)
+        await self.coordinator.async_refresh()
+
+    async def async_turn_off(self, **kwargs):
+        await self.hass.async_add_executor_job(self.controller.stopScreensaver)
+        await self.coordinator.async_refresh()
+
+
+class FullyMaintenanceModeSwitch(FullySwitch):
+    """Representation of a Fully Kiosk Browser maintenance mode switch."""
+
+    def __init__(self, hass, coordinator, controller):
+        super().__init__(hass, coordinator, controller)
+        self._name = f"{coordinator.data['deviceName']} Maintenance Mode"
+        self._unique_id = f"{coordinator.data['deviceID']}-maintenance"
+
+    @property
+    def is_on(self):
+        return self.coordinator.data["maintenanceMode"]
+
+    async def async_turn_on(self, **kwargs):
+        await self.hass.async_add_executor_job(self.controller.enableLockedMode)
+        await self.coordinator.async_refresh()
+
+    async def async_turn_off(self, **kwargs):
+        await self.hass.async_add_executor_job(self.controller.disableLockedMode)
+        await self.coordinator.async_refresh()
+
+
+class FullyKioskLockSwitch(FullySwitch):
+    """Representation of a Fully Kiosk Browser kiosk lock switch."""
+
+    def __init__(self, hass, coordinator, controller):
+        super().__init__(hass, coordinator, controller)
+        self._name = f"{coordinator.data['deviceName']} Kiosk Lock"
+        self._unique_id = f"{coordinator.data['deviceID']}-kiosk"
+
+    @property
+    def is_on(self):
+        return self.coordinator.data["kioskLocked"]
+
+    async def async_turn_on(self, **kwargs):
+        await self.hass.async_add_executor_job(self.controller.lockKiosk)
+        await self.coordinator.async_refresh()
+
+    async def async_turn_off(self, **kwargs):
+        await self.hass.async_add_executor_job(self.controller.unlockKiosk)
+        await self.coordinator.async_refresh()
