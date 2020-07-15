@@ -9,7 +9,6 @@ _LOGGER = logging.getLogger(__name__)
 
 SENSOR_TYPES = {
     "kioskMode": "Kiosk Mode",
-    "kioskLocked": "Kiosk Locked",
     "plugged": "Plugged In",
     "isDeviceAdmin": "Device Admin",
 }
