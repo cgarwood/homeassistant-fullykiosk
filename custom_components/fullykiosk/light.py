@@ -59,16 +59,19 @@ class FullyLight(LightEntity):
     def unique_id(self):
         return self._unique_id
 
-    def turn_on(self, **kwargs):
-        self.controller.screenOn()
+    async def async_turn_on(self, **kwargs):
+        await self.hass.async_add_executor_job(self.controller.screenOn)
         brightness = kwargs.get(ATTR_BRIGHTNESS)
         if brightness is None:
+            await self.coordinator.async_refresh()
             return
         if brightness != self.coordinator.data["screenBrightness"]:
             self.controller.setScreenBrightness(brightness)
+        await self.coordinator.async_refresh()
 
-    def turn_off(self, **kwargs):
-        self.controller.screenOff()
+    async def async_turn_off(self, **kwargs):
+        await self.hass.async_add_executor_job(self.controller.screenOff)
+        await self.coordinator.async_refresh()
 
     async def async_added_to_hass(self):
         """Connect to dispatcher listening for entity data notifications."""
