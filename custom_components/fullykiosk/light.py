@@ -35,7 +35,7 @@ class FullyLight(LightEntity):
 
     @property
     def is_on(self):
-        return self.coordinator.data["isScreenOn"]
+        return self.coordinator.data["screenOn"]
 
     @property
     def brightness(self):

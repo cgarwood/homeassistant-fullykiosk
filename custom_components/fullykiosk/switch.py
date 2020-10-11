@@ -70,7 +70,7 @@ class FullyScreenSaverSwitch(FullySwitch):
 
     @property
     def is_on(self):
-        return self.coordinator.data["currentFragment"] == "screensaver"
+        return self.coordinator.data["isInScreensaver"]
 
     async def async_turn_on(self, **kwargs):
         await self.hass.async_add_executor_job(self.controller.startScreensaver)
