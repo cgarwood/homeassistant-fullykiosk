@@ -54,6 +54,12 @@ class FullySensor(Entity):
         return None
 
     @property
+    def unit_of_measurement(self):
+        if self._sensor == "batteryLevel":
+            return "%"
+        return None
+
+    @property
     def device_info(self):
         return {
             "identifiers": {(DOMAIN, self.coordinator.data["deviceID"])},
