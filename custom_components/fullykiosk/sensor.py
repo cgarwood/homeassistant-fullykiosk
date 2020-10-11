@@ -1,7 +1,7 @@
 """Fully Kiosk Browser sensor."""
 import logging
 
-from homeassistant.const import DEVICE_CLASS_BATTERY
+from homeassistant.const import DEVICE_CLASS_BATTERY, PERCENTAGE
 from homeassistant.helpers.entity import Entity
 
 from .const import DOMAIN, COORDINATOR
@@ -56,7 +56,7 @@ class FullySensor(Entity):
     @property
     def unit_of_measurement(self):
         if self._sensor == "batteryLevel":
-            return "%"
+            return PERCENTAGE
         return None
 
     @property
