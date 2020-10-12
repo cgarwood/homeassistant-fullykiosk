@@ -35,6 +35,8 @@ class FullyLight(LightEntity):
 
     @property
     def is_on(self):
+        if self.coordinator.data["appVersionCode"] < 784:
+            return self.coordinator.data["isScreenOn"]
         return self.coordinator.data["screenOn"]
 
     @property
