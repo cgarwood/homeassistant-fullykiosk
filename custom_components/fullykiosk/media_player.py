@@ -1,10 +1,16 @@
 """Fully Kiosk Browser media_player entity."""
 import logging
+import voluptuous as vol
+
+from homeassistant.helpers import config_validation as cv, entity_platform, service
 
 from homeassistant.components.media_player import (
+    SERVICE_VOLUME_SET,
     SUPPORT_PLAY_MEDIA,
     MediaPlayerEntity,
 )
+
+SUPPORT_FULLYKIOSK = SUPPORT_PLAY_MEDIA
 
 from .const import DOMAIN, COORDINATOR, CONTROLLER
 
@@ -15,6 +21,21 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     """Set up the Fully Kiosk Browser media player."""
     coordinator = hass.data[DOMAIN][config_entry.entry_id][COORDINATOR]
     controller = hass.data[DOMAIN][config_entry.entry_id][CONTROLLER]
+
+    platform = entity_platform.current_platform.get()
+
+    # This will call Entity.set_sleep_timer(sleep_time=VALUE)
+    platform.async_register_entity_service(
+        SERVICE_VOLUME_SET,
+        {
+            vol.Required("volume_level"): cv.small_float,
+            vol.Required("stream"): vol.All(
+                vol.Number(scale=0),
+                vol.Range(1, 10),
+            ),
+        },
+        "set_fullykiosk_volume_level",
+    )
 
     async_add_entities([FullyMediaPlayer(coordinator, controller)], False)
 
@@ -34,7 +55,7 @@ class FullyMediaPlayer(MediaPlayerEntity):
 
     @property
     def supported_features(self):
-        return SUPPORT_PLAY_MEDIA
+        return SUPPORT_FULLYKIOSK
 
     @property
     def device_info(self):
@@ -52,6 +73,12 @@ class FullyMediaPlayer(MediaPlayerEntity):
 
     def play_media(self, media_type, media_id, **kwargs):
         self.controller.playSound(media_id)
+
+    def set_fullykiosk_volume_level(self, volume_level, stream):
+        """Set volume level for a stream, range 0..1."""
+        self.controller.sendCommand(
+            cmd="setAudioVolume", level=str(int(volume_level * 100)), stream=str(stream)
+        )
 
     async def async_added_to_hass(self):
         """Connect to dispatcher listening for entity data notifications."""
