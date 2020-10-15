@@ -68,7 +68,9 @@ class FullyLight(LightEntity):
             await self.coordinator.async_refresh()
             return
         if brightness != self.coordinator.data["screenBrightness"]:
-            self.controller.setScreenBrightness(brightness)
+            await self.hass.async_add_executor_job(
+                self.controller.setScreenBrightness, brightness
+            )
         await self.coordinator.async_refresh()
 
     async def async_turn_off(self, **kwargs):
