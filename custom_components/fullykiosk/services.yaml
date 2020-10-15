@@ -12,3 +12,20 @@ volume_set:
     stream:
       description: Stream for which to set the volume level (1-10)
       example: 3
+
+load_start_url:
+  description: Load fullykiosk start URL.
+  fields:
+    entity_id:
+      description: Name(s) of entities to load the start URL on.
+      example: "media_player.amazon_fire_media_player"
+
+load_url:
+  description: Load URL on fullykiosk.
+  fields:
+    entity_id:
+      description: Name(s) of entities to load the start URL on.
+      example: "media_player.amazon_fire_media_player"
+    url:
+      description: URL to be loaded.
+      example: "https://www.google.com"
