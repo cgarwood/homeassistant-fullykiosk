@@ -4,10 +4,18 @@ DOMAIN = "fullykiosk"
 COORDINATOR = "coordinator"
 CONTROLLER = "controller"
 
+ATTR_APPLICATION = "application"
+ATTR_CONFIG_TYPE = "type"
+ATTR_KEY = "key"
 ATTR_STREAM = "stream"
 ATTR_URL = "url"
+ATTR_VALUE = "value"
 
 AUDIOMANAGER_STREAM_MUSIC = 3
 
 SERVICE_LOAD_START_URL = "load_start_url"
 SERVICE_LOAD_URL = "load_url"
+SERVICE_RESTART_APP = "restart"
+SERVICE_SET_CONFIG = "set_config"
+SERVICE_START_APPLICATION = "start_application"
+SERVICE_TO_FOREGROUND = "to_foreground"
