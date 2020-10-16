@@ -25,6 +25,7 @@ from .const import (
     DOMAIN,
     SERVICE_LOAD_START_URL,
     SERVICE_LOAD_URL,
+    SERVICE_PLAY_AUDIO,
     SERVICE_RESTART_APP,
     SERVICE_SET_CONFIG,
     SERVICE_START_APPLICATION,
@@ -50,6 +51,15 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 
     platform.async_register_entity_service(
         SERVICE_LOAD_URL, {vol.Required(ATTR_URL): cv.url}, "async_fullykiosk_load_url"
+    )
+
+    platform.async_register_entity_service(
+        SERVICE_PLAY_AUDIO,
+        {
+            vol.Required(ATTR_URL): cv.string,
+            vol.Required(ATTR_STREAM): vol.All(vol.Number(scale=0), vol.Range(1, 10)),
+        },
+        "async_fullykiosk_play_audio",
     )
 
     platform.async_register_entity_service(
@@ -119,20 +129,21 @@ class FullyMediaPlayer(MediaPlayerEntity):
     def unique_id(self):
         return self._unique_id
 
-    def play_media(self, media_type, media_id, **kwargs):
-        self.controller.playSound(media_id)
-
     def fullykiosk_set_volume_level(self, volume_level, stream):
         """Set volume level for a stream, range 0..1."""
-        self.controller.sendCommand(
-            cmd="setAudioVolume", level=str(int(volume_level * 100)), stream=str(stream)
-        )
+        self.controller.setAudioVolume(int(volume_level * 100), stream)
+
+    def fullykiosk_play_audio(self, url, stream):
+        """Play a piece of audio on a specific stream."""
+        self.controller.playSound(url, stream)
+
+    def play_media(self, media_type, media_id, **kwargs):
+        """Play a piece of media."""
+        self.fullykiosk_play_audio(media_id, AUDIOMANAGER_STREAM_MUSIC)
 
     def set_volume_level(self, volume_level):
         """Set volume level, range 0..1."""
-        self.fullykiosk_set_volume_level(
-            volume_level=volume_level, stream=AUDIOMANAGER_STREAM_MUSIC
-        )
+        self.fullykiosk_set_volume_level(volume_level, AUDIOMANAGER_STREAM_MUSIC)
 
     async def async_fullykiosk_load_start_url(self):
         """Load the start URL on a fullykiosk browser."""
@@ -142,18 +153,24 @@ class FullyMediaPlayer(MediaPlayerEntity):
         """Load URL on a fullykiosk browser."""
         await self.hass.async_add_executor_job(self.controller.loadUrl, url)
 
+    async def async_fullykiosk_play_audio(self, url, stream):
+        """Play a piece of audio on a specific stream."""
+        await self.hass.async_add_executor_job(self.fullykiosk_play_audio, url, stream)
+
     async def async_fullykiosk_restart(self):
         """Restart the fullykiosk browser app."""
         await self.hass.async_add_executor_job(self.controller.restartApp)
 
-    async def async_fullykiosk_set_config(self, type, key, value):
+    async def async_fullykiosk_set_config(self, config_type, key, value):
         """Set fullykiosk configuration value."""
-        if type == "string":
+        if config_type == "string":
             await self.hass.async_add_executor_job(
                 self.controller.setConfigurationString, key, value
             )
-        elif type == "bool":
-            raise NotImplementedError()
+        elif config_type == "bool":
+            await self.hass.async_add_executor_job(
+                self.controller.setConfigurationBool, key, value
+            )
 
     async def async_fullykiosk_set_volume_level(self, volume_level, stream):
         """Set volume level for a stream, range 0..1."""

@@ -1,18 +1,5 @@
 # Describes the format for available fullykiosk services
 
-volume_set:
-  description: Set a Fully Kiosk Browser volume level.
-  fields:
-    entity_id:
-      description: Name(s) of entities to set volume level on.
-      example: "media_player.amazon_fire_media_player"
-    volume_level:
-      description: Volume level to set as float.
-      example: 0.6
-    stream:
-      description: Stream for which to set the volume level (1-10)
-      example: 3
-
 load_start_url:
   description: Load Fully Kiosk Browser start URL.
   fields:
@@ -30,6 +17,19 @@ load_url:
       description: URL to be loaded.
       example: "https://www.fully-kiosk.com"
 
+play_audio:
+  description: Play audio on a Fully Kiosk Browser.
+  fields:
+    entity_id:
+      description: Name(s) of entities to play media on
+      example: "media_player.amazon_fire_media_player"
+    url:
+      description: The URL of the audio to play.
+      example: "https://home-assistant.io/audio/test.mp3"
+    stream:
+      description: Stream on which to play the audio
+      example: 3
+
 restart:
   description: Restart the Fully Kiosk Browser app.
   fields:
@@ -43,7 +43,7 @@ set_config:
     entity_id:
       description: Name(s) of entities to modify the setting on.
       example: "media_player.amazon_fire_media_player"
-    type:
+    config_type:
       description: Type of setting (either 'string' or 'bool')
       example: "string"
     key:
@@ -69,3 +69,16 @@ to_foreground:
     entity_id:
       description: Name(s) of entities on which to bring the app to the foreground.
       example: "media_player.amazon_fire_media_player"
+
+volume_set:
+  description: Set a Fully Kiosk Browser volume level.
+  fields:
+    entity_id:
+      description: Name(s) of entities to set volume level on.
+      example: "media_player.amazon_fire_media_player"
+    volume_level:
+      description: Volume level to set as float.
+      example: 0.6
+    stream:
+      description: Stream for which to set the volume level (1-10)
+      example: 3
