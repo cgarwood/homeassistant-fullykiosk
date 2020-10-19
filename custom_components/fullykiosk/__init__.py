@@ -3,53 +3,39 @@ import asyncio
 import logging
 import voluptuous as vol
 
-from datetime import timedelta
-
-from fullykiosk import FullyKiosk
-
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant
 from homeassistant.const import CONF_HOST, CONF_PORT, CONF_PASSWORD
 from homeassistant.exceptions import ConfigEntryNotReady
-from homeassistant.helpers.dispatcher import async_dispatcher_send
-from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
+from homeassistant.helpers.typing import HomeAssistantType
 
-from .const import DOMAIN, COORDINATOR, CONTROLLER
-
-_LOGGER = logging.getLogger(__name__)
+from .const import DOMAIN
+from .coordinator import FullyKioskDataUpdateCoordinator
 
 CONFIG_SCHEMA = vol.Schema({DOMAIN: vol.Schema({})}, extra=vol.ALLOW_EXTRA)
 
-# TODO List the platforms that you want to support.
-# For your initial PR, limit it to 1 platform.
 PLATFORMS = ["binary_sensor", "light", "media_player", "sensor", "switch"]
 
+_LOGGER = logging.getLogger(__name__)
 
-async def async_setup(hass: HomeAssistant, config: dict):
+
+async def async_setup(hass: HomeAssistantType, config: dict):
     """Set up the Fully Kiosk Browser component."""
+
+    hass.data.setdefault(DOMAIN, {})
     return True
 
 
-async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
+async def async_setup_entry(hass: HomeAssistantType, entry: ConfigEntry):
     """Set up Fully Kiosk Browser from a config entry."""
 
-    hass.data.setdefault(DOMAIN, {})
-    hass.data[DOMAIN][entry.entry_id] = {}
-
-    config = entry.data
-    fully = FullyKiosk(config[CONF_HOST], config[CONF_PORT], config[CONF_PASSWORD])
-
-    async def async_update_data():
-        """Fetch data from REST API."""
-        data = await hass.async_add_executor_job(fully.getDeviceInfo)
-        return data
-
-    coordinator = DataUpdateCoordinator(
+    entry_data = entry.data
+    coordinator = FullyKioskDataUpdateCoordinator(
         hass,
-        _LOGGER,
-        name="deviceInfo",
-        update_method=async_update_data,
-        update_interval=timedelta(seconds=30),
+        async_get_clientsession(hass),
+        entry_data[CONF_HOST],
+        entry_data[CONF_PORT],
+        entry_data[CONF_PASSWORD],
     )
 
     await coordinator.async_refresh()
@@ -57,8 +43,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     if not coordinator.last_update_success:
         raise ConfigEntryNotReady
 
-    hass.data[DOMAIN][entry.entry_id][COORDINATOR] = coordinator
-    hass.data[DOMAIN][entry.entry_id][CONTROLLER] = fully
+    hass.data[DOMAIN][entry.entry_id] = coordinator
 
     for component in PLATFORMS:
         hass.async_create_task(
@@ -68,7 +53,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     return True
 
 
-async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry):
+async def async_unload_entry(hass: HomeAssistantType, entry: ConfigEntry):
     """Unload a config entry."""
     unload_ok = all(
         await asyncio.gather(
