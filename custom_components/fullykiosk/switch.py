@@ -67,9 +67,10 @@ class FullyScreenSaverSwitch(FullySwitch):
 
     @property
     def is_on(self):
-        if self.coordinator.data["appVersionCode"] < 784:
-            return self.coordinator.data["currentFragment"] == "screensaver"
-        return self.coordinator.data["isInScreensaver"]
+        if self.coordinator.data:
+            if self.coordinator.data["appVersionCode"] < 784:
+                return self.coordinator.data["currentFragment"] == "screensaver"
+            return self.coordinator.data["isInScreensaver"]
 
     async def async_turn_on(self, **kwargs):
         await self.coordinator.fully.startScreensaver()

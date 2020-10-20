@@ -141,10 +141,12 @@ class FullyMediaPlayer(CoordinatorEntity, MediaPlayerEntity):
     async def async_fullykiosk_load_start_url(self):
         """Load the start URL on a fullykiosk browser."""
         await self.coordinator.fully.loadStartUrl()
+        await self.coordinator.async_refresh()
 
     async def async_fullykiosk_load_url(self, url):
         """Load URL on a fullykiosk browser."""
         await self.coordinator.fully.loadUrl(url)
+        await self.coordinator.async_refresh()
 
     async def async_fullykiosk_play_audio(self, url, stream):
         """Play a piece of audio on a specific stream."""
@@ -153,10 +155,12 @@ class FullyMediaPlayer(CoordinatorEntity, MediaPlayerEntity):
     async def async_fullykiosk_reboot_device(self):
         """Reboot the device running the fullykiosk browser app."""
         await self.coordinator.fully.rebootDevice()
+        await self.coordinator.async_refresh()
 
     async def async_fullykiosk_restart(self):
         """Restart the fullykiosk browser app."""
         await self.coordinator.fully.restartApp()
+        await self.coordinator.async_refresh()
 
     async def async_fullykiosk_set_config(self, config_type, key, value):
         """Set fullykiosk configuration value."""
@@ -172,10 +176,12 @@ class FullyMediaPlayer(CoordinatorEntity, MediaPlayerEntity):
     async def async_fullykiosk_start_app(self, application):
         """Start an application on the device running the fullykiosk browser app."""
         await self.coordinator.fully.startApplication(application)
+        await self.coordinator.async_refresh()
 
     async def async_fullykiosk_to_foreground(self):
         """Bring the fullykiosk browser app back to the foreground."""
         await self.coordinator.fully.toForeground()
+        await self.coordinator.async_refresh()
 
     async def async_added_to_hass(self):
         """Connect to dispatcher listening for entity data notifications."""

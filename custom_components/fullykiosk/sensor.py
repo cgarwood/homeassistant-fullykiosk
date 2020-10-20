@@ -46,7 +46,8 @@ class FullySensor(CoordinatorEntity, Entity):
 
     @property
     def state(self):
-        return self.coordinator.data[self._sensor]
+        if self.coordinator.data:
+            return self.coordinator.data[self._sensor]
 
     @property
     def device_class(self):
