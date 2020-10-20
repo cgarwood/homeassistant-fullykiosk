@@ -3,8 +3,9 @@ import logging
 
 from homeassistant.const import DEVICE_CLASS_BATTERY, PERCENTAGE
 from homeassistant.helpers.entity import Entity
+from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN, COORDINATOR
+from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -20,7 +21,7 @@ SENSOR_TYPES = {
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
     """Set up the Fully Kiosk Browser sensor."""
-    coordinator = hass.data[DOMAIN][config_entry.entry_id][COORDINATOR]
+    coordinator = hass.data[DOMAIN][config_entry.entry_id]
 
     sensors = []
 
@@ -30,7 +31,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     async_add_entities(sensors, False)
 
 
-class FullySensor(Entity):
+class FullySensor(CoordinatorEntity, Entity):
     """Representation of a Fully Kiosk Browser sensor."""
 
     def __init__(self, coordinator, sensor):
@@ -45,7 +46,8 @@ class FullySensor(Entity):
 
     @property
     def state(self):
-        return self.coordinator.data[self._sensor]
+        if self.coordinator.data:
+            return self.coordinator.data[self._sensor]
 
     @property
     def device_class(self):

@@ -6,27 +6,25 @@ from homeassistant.components.light import (
     LightEntity,
     SUPPORT_BRIGHTNESS,
 )
+from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN, COORDINATOR, CONTROLLER
+from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
     """Set up the Fully Kiosk Browser light."""
-    coordinator = hass.data[DOMAIN][config_entry.entry_id][COORDINATOR]
-    controller = hass.data[DOMAIN][config_entry.entry_id][CONTROLLER]
-
-    async_add_entities([FullyLight(coordinator, controller)], False)
+    coordinator = hass.data[DOMAIN][config_entry.entry_id]
+    async_add_entities([FullyLight(coordinator)], False)
 
 
-class FullyLight(LightEntity):
+class FullyLight(CoordinatorEntity, LightEntity):
     """Representation of a Fully Kiosk Browser light."""
 
-    def __init__(self, coordinator, controller):
+    def __init__(self, coordinator):
         self._name = f"{coordinator.data['deviceName']} Screen"
         self.coordinator = coordinator
-        self.controller = controller
         self._unique_id = f"{coordinator.data['deviceID']}-screen"
 
     @property
@@ -35,9 +33,10 @@ class FullyLight(LightEntity):
 
     @property
     def is_on(self):
-        if self.coordinator.data["appVersionCode"] < 784:
-            return self.coordinator.data["isScreenOn"]
-        return self.coordinator.data["screenOn"]
+        if self.coordinator.data:
+            if self.coordinator.data["appVersionCode"] < 784:
+                return self.coordinator.data["isScreenOn"]
+            return self.coordinator.data["screenOn"]
 
     @property
     def brightness(self):
@@ -62,19 +61,17 @@ class FullyLight(LightEntity):
         return self._unique_id
 
     async def async_turn_on(self, **kwargs):
-        await self.hass.async_add_executor_job(self.controller.screenOn)
+        await self.coordinator.fully.screenOn()
         brightness = kwargs.get(ATTR_BRIGHTNESS)
         if brightness is None:
             await self.coordinator.async_refresh()
             return
         if brightness != self.coordinator.data["screenBrightness"]:
-            await self.hass.async_add_executor_job(
-                self.controller.setScreenBrightness, brightness
-            )
+            await self.coordinator.fully.setScreenBrightness(brightness)
         await self.coordinator.async_refresh()
 
     async def async_turn_off(self, **kwargs):
-        await self.hass.async_add_executor_job(self.controller.screenOff)
+        await self.coordinator.fully.screenOff()
         await self.coordinator.async_refresh()
 
     async def async_added_to_hass(self):
