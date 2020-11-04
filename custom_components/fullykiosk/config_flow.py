@@ -2,11 +2,17 @@
 import logging
 
 import voluptuous as vol
+from async_timeout import timeout
+
+from aiohttp.client_exceptions import ClientConnectorError
 
 from fullykiosk import FullyKiosk
+from fullykiosk.exceptions import FullyKioskError
 
 from homeassistant import config_entries, core, exceptions
 from homeassistant.const import CONF_HOST, CONF_PORT, CONF_PASSWORD
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
+
 
 from .const import DOMAIN  # pylint:disable=unused-import
 
@@ -39,25 +45,15 @@ class PlaceholderHub:
 
 
 async def validate_input(hass: core.HomeAssistant, data):
-    """Validate the user input allows us to connect.
+    """Validate the user input allows us to connect."""
+    session = async_get_clientsession()
+    fully = FullyKiosk(session, data["host"], data["port"], data["password"])
 
-    Data has the keys from DATA_SCHEMA with values provided by the user.
-    """
-    # TODO validate the data can be used to set up a connection.
-
-    # If your PyPI package is not built with async, pass your methods
-    # to the executor:
-    # await hass.async_add_executor_job(
-    #     your_validate_func, data["username"], data["password"]
-    # )
-
-    fully = FullyKiosk(data["host"], data["port"], data["password"])
-
-    # try:
-    deviceInfo = await hass.async_add_executor_job(fully.getDeviceInfo)
-    # except:
-
-    #    raise InvalidAuth
+    try:
+        with timeout(10):
+            deviceInfo = await fully.getDeviceInfo()
+    except (FullyKioskError, ClientConnectorError):
+        raise CannotConnect
 
     # If you cannot connect:
     # throw CannotConnect
