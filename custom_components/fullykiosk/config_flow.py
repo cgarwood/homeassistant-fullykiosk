@@ -46,7 +46,7 @@ class PlaceholderHub:
 
 async def validate_input(hass: core.HomeAssistant, data):
     """Validate the user input allows us to connect."""
-    session = async_get_clientsession()
+    session = async_get_clientsession(hass)
     fully = FullyKiosk(session, data["host"], data["port"], data["password"])
 
     try:
