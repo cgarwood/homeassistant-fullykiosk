@@ -2,3 +2,4 @@ __pycache__/
 bin
 lib
 .DS_Store
+.pytest_cache/
