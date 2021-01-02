@@ -61,10 +61,10 @@ set_config:
       example: "https://www.fully-kiosk.com"
 
 start_application:
-  description: Restart the Fully Kiosk Browser app.
+  description: Start an application on the device.
   fields:
     entity_id:
-      description: Name(s) of entities to restart the app on.
+      description: Name(s) of entities to start the app on.
       example: "media_player.amazon_fire_media_player"
     application:
       description: Package name of the application to start.
