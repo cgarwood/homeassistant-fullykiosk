@@ -13,8 +13,4 @@ jobs:
       - uses: "actions/setup-python@v1"
         with:
           python-version: "3.8"
-      - run: python3 -m pip install black
-      - run: black . --check
-
-      - run: python3 -m pip install isort
-      - run: isort . -c --profile "black"
+      - uses: pre-commit/action@v2.0.0
