@@ -1,5 +1,4 @@
 """Constants for the Fully Kiosk Browser integration."""
-from datetime import timedelta
 
 DOMAIN = "fullykiosk"
 

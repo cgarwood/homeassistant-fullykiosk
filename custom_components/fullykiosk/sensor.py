@@ -35,6 +35,7 @@ class FullySensor(CoordinatorEntity, Entity):
     """Representation of a Fully Kiosk Browser sensor."""
 
     def __init__(self, coordinator, sensor):
+        """Initialize the sensor entity."""
         self._name = f"{coordinator.data['deviceName']} {SENSOR_TYPES[sensor]}"
         self._sensor = sensor
         self.coordinator = coordinator
@@ -42,27 +43,32 @@ class FullySensor(CoordinatorEntity, Entity):
 
     @property
     def name(self):
+        """Return the name of the sensor."""
         return self._name
 
     @property
     def state(self):
+        """Return the state of the sensor."""
         if self.coordinator.data:
             return self.coordinator.data[self._sensor]
 
     @property
     def device_class(self):
+        """Return the device class."""
         if self._sensor == "batteryLevel":
             return DEVICE_CLASS_BATTERY
         return None
 
     @property
     def unit_of_measurement(self):
+        """Return the unit of measurement."""
         if self._sensor == "batteryLevel":
             return PERCENTAGE
         return None
 
     @property
     def device_info(self):
+        """Return the device info."""
         return {
             "identifiers": {(DOMAIN, self.coordinator.data["deviceID"])},
             "name": self.coordinator.data["deviceName"],
@@ -73,6 +79,7 @@ class FullySensor(CoordinatorEntity, Entity):
 
     @property
     def unique_id(self):
+        """Return the unique id."""
         return self._unique_id
 
     async def async_added_to_hass(self):
