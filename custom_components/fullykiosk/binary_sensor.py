@@ -1,7 +1,8 @@
 """Fully Kiosk Browser sensor."""
 import logging
 
-from homeassistant.components.binary_sensor import BinarySensorEntity, DEVICE_CLASS_PLUG
+from homeassistant.components.binary_sensor import (DEVICE_CLASS_PLUG,
+                                                    BinarySensorEntity)
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN

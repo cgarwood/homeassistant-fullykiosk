@@ -1,36 +1,23 @@
 """Fully Kiosk Browser media_player entity."""
 import logging
+
 import voluptuous as vol
 
-from homeassistant.components.media_player import (
-    ATTR_MEDIA_VOLUME_LEVEL,
-    SERVICE_VOLUME_SET,
-    SUPPORT_PLAY_MEDIA,
-    SUPPORT_VOLUME_SET,
-    MediaPlayerEntity,
-)
+from homeassistant.components.media_player import (ATTR_MEDIA_VOLUME_LEVEL,
+                                                   SERVICE_VOLUME_SET,
+                                                   SUPPORT_PLAY_MEDIA,
+                                                   SUPPORT_VOLUME_SET,
+                                                   MediaPlayerEntity)
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers import entity_platform
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import (
-    ATTR_APPLICATION,
-    ATTR_CONFIG_TYPE,
-    ATTR_KEY,
-    ATTR_STREAM,
-    ATTR_URL,
-    ATTR_VALUE,
-    AUDIOMANAGER_STREAM_MUSIC,
-    DOMAIN,
-    SERVICE_LOAD_START_URL,
-    SERVICE_LOAD_URL,
-    SERVICE_PLAY_AUDIO,
-    SERVICE_REBOOT_DEVICE,
-    SERVICE_RESTART_APP,
-    SERVICE_SET_CONFIG,
-    SERVICE_START_APPLICATION,
-    SERVICE_TO_FOREGROUND,
-)
+from .const import (ATTR_APPLICATION, ATTR_CONFIG_TYPE, ATTR_KEY, ATTR_STREAM,
+                    ATTR_URL, ATTR_VALUE, AUDIOMANAGER_STREAM_MUSIC, DOMAIN,
+                    SERVICE_LOAD_START_URL, SERVICE_LOAD_URL,
+                    SERVICE_PLAY_AUDIO, SERVICE_REBOOT_DEVICE,
+                    SERVICE_RESTART_APP, SERVICE_SET_CONFIG,
+                    SERVICE_START_APPLICATION, SERVICE_TO_FOREGROUND)
 
 SUPPORT_FULLYKIOSK = SUPPORT_PLAY_MEDIA | SUPPORT_VOLUME_SET
 

@@ -1,6 +1,6 @@
 """Provides the The Fully Kiosk Browser DataUpdateCoordinator."""
-from datetime import timedelta
 import logging
+from datetime import timedelta
 
 from aiohttp import ClientSession
 from aiohttp.client_exceptions import ClientConnectorError
@@ -9,7 +9,8 @@ from fullykiosk import FullyKiosk
 from fullykiosk.exceptions import FullyKioskError
 
 from homeassistant.helpers.typing import HomeAssistantType
-from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
+from homeassistant.helpers.update_coordinator import (DataUpdateCoordinator,
+                                                      UpdateFailed)
 
 from .const import UPDATE_INTERVAL
 

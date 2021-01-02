@@ -1,11 +1,8 @@
 """Fully Kiosk Browser light entity for controlling screen brightness & on/off."""
 import logging
 
-from homeassistant.components.light import (
-    ATTR_BRIGHTNESS,
-    LightEntity,
-    SUPPORT_BRIGHTNESS,
-)
+from homeassistant.components.light import (ATTR_BRIGHTNESS,
+                                            SUPPORT_BRIGHTNESS, LightEntity)
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN
