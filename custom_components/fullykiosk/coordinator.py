@@ -1,13 +1,12 @@
 """Provides the The Fully Kiosk Browser DataUpdateCoordinator."""
-from datetime import timedelta
 import logging
+from datetime import timedelta
 
 from aiohttp import ClientSession
 from aiohttp.client_exceptions import ClientConnectorError
 from async_timeout import timeout
 from fullykiosk import FullyKiosk
 from fullykiosk.exceptions import FullyKioskError
-
 from homeassistant.helpers.typing import HomeAssistantType
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
@@ -26,7 +25,10 @@ class FullyKioskDataUpdateCoordinator(DataUpdateCoordinator):
         self.fully = FullyKiosk(session, host, port, password)
 
         super().__init__(
-            hass, _LOGGER, name=f"{host} deviceInfo", update_interval=timedelta(seconds=UPDATE_INTERVAL)
+            hass,
+            _LOGGER,
+            name=f"{host} deviceInfo",
+            update_interval=timedelta(seconds=UPDATE_INTERVAL),
         )
 
     async def _async_update_data(self):

@@ -1,7 +1,7 @@
 """Fully Kiosk Browser sensor."""
 import logging
 
-from homeassistant.components.binary_sensor import BinarySensorEntity, DEVICE_CLASS_PLUG
+from homeassistant.components.binary_sensor import DEVICE_CLASS_PLUG, BinarySensorEntity
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN
@@ -31,6 +31,7 @@ class FullyBinarySensor(CoordinatorEntity, BinarySensorEntity):
     """Representation of a Fully Kiosk Browser binary sensor."""
 
     def __init__(self, coordinator, sensor):
+        """Initialize the binary sensor."""
         self._name = f"{coordinator.data['deviceName']} {SENSOR_TYPES[sensor]}"
         self._sensor = sensor
         self.coordinator = coordinator
@@ -38,21 +39,25 @@ class FullyBinarySensor(CoordinatorEntity, BinarySensorEntity):
 
     @property
     def name(self):
+        """Return the name of the binary sensor."""
         return self._name
 
     @property
     def is_on(self):
+        """Return if the binary sensor is on."""
         if self.coordinator.data:
             return self.coordinator.data[self._sensor]
 
     @property
     def device_class(self):
+        """Return the device class."""
         if self._sensor == "plugged":
             return DEVICE_CLASS_PLUG
         return None
 
     @property
     def device_info(self):
+        """Return the device info."""
         return {
             "identifiers": {(DOMAIN, self.coordinator.data["deviceID"])},
             "name": self.coordinator.data["deviceName"],
@@ -63,6 +68,7 @@ class FullyBinarySensor(CoordinatorEntity, BinarySensorEntity):
 
     @property
     def unique_id(self):
+        """Return the unique id."""
         return self._unique_id
 
     async def async_added_to_hass(self):

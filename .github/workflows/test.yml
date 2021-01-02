@@ -1,0 +1,16 @@
+name: Run Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  formatting:
+    runs-on: "ubuntu-latest"
+    name: Check formatting
+    steps:
+      - uses: "actions/checkout@v2"
+      - uses: "actions/setup-python@v1"
+        with:
+          python-version: "3.8"
+      - uses: pre-commit/action@v2.0.0

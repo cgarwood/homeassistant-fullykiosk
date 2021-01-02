@@ -3,8 +3,8 @@ import logging
 
 from homeassistant.components.light import (
     ATTR_BRIGHTNESS,
-    LightEntity,
     SUPPORT_BRIGHTNESS,
+    LightEntity,
 )
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
@@ -23,16 +23,19 @@ class FullyLight(CoordinatorEntity, LightEntity):
     """Representation of a Fully Kiosk Browser light."""
 
     def __init__(self, coordinator):
+        """Initialize the light (screen) entity."""
         self._name = f"{coordinator.data['deviceName']} Screen"
         self.coordinator = coordinator
         self._unique_id = f"{coordinator.data['deviceID']}-screen"
 
     @property
     def name(self):
+        """Return the name of the entity."""
         return self._name
 
     @property
     def is_on(self):
+        """Return if the screen is on."""
         if self.coordinator.data:
             if self.coordinator.data["appVersionCode"] < 784:
                 return self.coordinator.data["isScreenOn"]
@@ -40,14 +43,17 @@ class FullyLight(CoordinatorEntity, LightEntity):
 
     @property
     def brightness(self):
+        """Return the screen brightness."""
         return self.coordinator.data["screenBrightness"]
 
     @property
     def supported_features(self):
+        """Return the supported features."""
         return SUPPORT_BRIGHTNESS
 
     @property
     def device_info(self):
+        """Return the device info."""
         return {
             "identifiers": {(DOMAIN, self.coordinator.data["deviceID"])},
             "name": self.coordinator.data["deviceName"],
@@ -58,9 +64,11 @@ class FullyLight(CoordinatorEntity, LightEntity):
 
     @property
     def unique_id(self):
+        """Return the unique id."""
         return self._unique_id
 
     async def async_turn_on(self, **kwargs):
+        """Turn on the screen."""
         await self.coordinator.fully.screenOn()
         brightness = kwargs.get(ATTR_BRIGHTNESS)
         if brightness is None:
@@ -71,6 +79,7 @@ class FullyLight(CoordinatorEntity, LightEntity):
         await self.coordinator.async_refresh()
 
     async def async_turn_off(self, **kwargs):
+        """Turn off the screen."""
         await self.coordinator.fully.screenOff()
         await self.coordinator.async_refresh()
 

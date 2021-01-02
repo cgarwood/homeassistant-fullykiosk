@@ -1,7 +1,7 @@
 """Fully Kiosk Browser media_player entity."""
 import logging
-import voluptuous as vol
 
+import voluptuous as vol
 from homeassistant.components.media_player import (
     ATTR_MEDIA_VOLUME_LEVEL,
     SERVICE_VOLUME_SET,
@@ -104,20 +104,24 @@ class FullyMediaPlayer(CoordinatorEntity, MediaPlayerEntity):
     """Representation of a Fully Kiosk Browser media player."""
 
     def __init__(self, coordinator):
+        """Initialize a Fully Kiosk Browser media player."""
         self._name = f"{coordinator.data['deviceName']} Media Player"
         self.coordinator = coordinator
         self._unique_id = f"{coordinator.data['deviceID']}-mediaplayer"
 
     @property
     def name(self):
+        """Return the name of the media player."""
         return self._name
 
     @property
     def supported_features(self):
+        """Return the supported features."""
         return SUPPORT_FULLYKIOSK
 
     @property
     def device_info(self):
+        """Return the device info."""
         return {
             "identifiers": {(DOMAIN, self.coordinator.data["deviceID"])},
             "name": self.coordinator.data["deviceName"],
@@ -128,6 +132,7 @@ class FullyMediaPlayer(CoordinatorEntity, MediaPlayerEntity):
 
     @property
     def unique_id(self):
+        """Return the unique id."""
         return self._unique_id
 
     async def async_play_media(self, media_type, media_id, **kwargs):

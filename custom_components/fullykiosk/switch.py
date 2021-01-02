@@ -22,6 +22,7 @@ class FullySwitch(CoordinatorEntity, SwitchEntity):
     """Representation of a generic Fully Kiosk Browser switch entity."""
 
     def __init__(self, hass, coordinator):
+        """Initialize the switch."""
         self.coordinator = coordinator
         self.hass = hass
 
@@ -30,10 +31,12 @@ class FullySwitch(CoordinatorEntity, SwitchEntity):
 
     @property
     def name(self):
+        """Return the name of the switch."""
         return self._name
 
     @property
     def device_info(self):
+        """Return the device info."""
         return {
             "identifiers": {(DOMAIN, self.coordinator.data["deviceID"])},
             "name": self.coordinator.data["deviceName"],
@@ -44,6 +47,7 @@ class FullySwitch(CoordinatorEntity, SwitchEntity):
 
     @property
     def unique_id(self):
+        """Return the unique id."""
         return self._unique_id
 
     async def async_added_to_hass(self):
@@ -61,22 +65,26 @@ class FullyScreenSaverSwitch(FullySwitch):
     """Representation of a Fully Kiosk Browser screensaver switch."""
 
     def __init__(self, hass, coordinator):
+        """Initialize the screensaver switch."""
         super().__init__(hass, coordinator)
         self._name = f"{coordinator.data['deviceName']} Screensaver"
         self._unique_id = f"{coordinator.data['deviceID']}-screensaver"
 
     @property
     def is_on(self):
+        """Return if switch is on."""
         if self.coordinator.data:
             if self.coordinator.data["appVersionCode"] < 784:
                 return self.coordinator.data["currentFragment"] == "screensaver"
             return self.coordinator.data["isInScreensaver"]
 
     async def async_turn_on(self, **kwargs):
+        """Turn on the screensaver."""
         await self.coordinator.fully.startScreensaver()
         await self.coordinator.async_refresh()
 
     async def async_turn_off(self, **kwargs):
+        """Turn off the screensaver."""
         await self.coordinator.fully.stopScreensaver()
         await self.coordinator.async_refresh()
 
@@ -85,19 +93,23 @@ class FullyMaintenanceModeSwitch(FullySwitch):
     """Representation of a Fully Kiosk Browser maintenance mode switch."""
 
     def __init__(self, hass, coordinator):
+        """Initialize the maintenance mode switch."""
         super().__init__(hass, coordinator)
         self._name = f"{coordinator.data['deviceName']} Maintenance Mode"
         self._unique_id = f"{coordinator.data['deviceID']}-maintenance"
 
     @property
     def is_on(self):
+        """Return if maintenance mode is on."""
         return self.coordinator.data["maintenanceMode"]
 
     async def async_turn_on(self, **kwargs):
+        """Turn on maintenance mode."""
         await self.coordinator.fully.enableLockedMode()
         await self.coordinator.async_refresh()
 
     async def async_turn_off(self, **kwargs):
+        """Turn off maintenance mode."""
         await self.coordinator.fully.disableLockedMode()
         await self.coordinator.async_refresh()
 
@@ -106,18 +118,22 @@ class FullyKioskLockSwitch(FullySwitch):
     """Representation of a Fully Kiosk Browser kiosk lock switch."""
 
     def __init__(self, hass, coordinator):
+        """Intialize the kiosk lock switch."""
         super().__init__(hass, coordinator)
         self._name = f"{coordinator.data['deviceName']} Kiosk Lock"
         self._unique_id = f"{coordinator.data['deviceID']}-kiosk"
 
     @property
     def is_on(self):
+        """Return if kiosk lock is on."""
         return self.coordinator.data["kioskLocked"]
 
     async def async_turn_on(self, **kwargs):
+        """Turn on kiosk lock."""
         await self.coordinator.fully.lockKiosk()
         await self.coordinator.async_refresh()
 
     async def async_turn_off(self, **kwargs):
+        """Turn off kiosk lock."""
         await self.coordinator.fully.unlockKiosk()
         await self.coordinator.async_refresh()
