@@ -1,6 +1,5 @@
 """Test the Fully Kiosk Browser config flow."""
 from asynctest import patch
-
 from homeassistant import config_entries, setup
 from homeassistant.components.fullykiosk.config_flow import CannotConnect, InvalidAuth
 from homeassistant.components.fullykiosk.const import DOMAIN
@@ -21,7 +20,7 @@ async def test_form(hass):
     ), patch(
         "homeassistant.components.fullykiosk.async_setup", return_value=True
     ) as mock_setup, patch(
-        "homeassistant.components.fullykiosk.async_setup_entry", return_value=True,
+        "homeassistant.components.fullykiosk.async_setup_entry", return_value=True
     ) as mock_setup_entry:
         result2 = await hass.config_entries.flow.async_configure(
             result["flow_id"],

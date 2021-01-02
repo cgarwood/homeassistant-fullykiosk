@@ -6,7 +6,6 @@ from aiohttp.client_exceptions import ClientConnectorError
 from async_timeout import timeout
 from fullykiosk import FullyKiosk
 from fullykiosk.exceptions import FullyKioskError
-
 from homeassistant import config_entries, core, exceptions
 from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_PORT
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
