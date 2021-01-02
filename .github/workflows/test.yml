@@ -1,0 +1,27 @@
+name: Run Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  black:
+    runs-on: "ubuntu-latest"
+    name: Check black formatting
+    steps:
+      - uses: "actions/checkout@v2"
+      - uses: "actions/setup-python@v1"
+        with:
+          python-version: "3.8"
+      - run: python3 -m pip install black
+      - run: black .
+  isort:
+    runs-on: "ubuntu-latest"
+    name: Check isort
+    steps:
+      - uses: "actions/checkout@v2"
+      - uses: "actions/setup-python@v1"
+        with:
+          python-version: "3.8"
+      - run: python3 -m pip install isort
+      - run: isort . -c
