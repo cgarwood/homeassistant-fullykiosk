@@ -14,4 +14,4 @@ The `media_player` entity has a few extra services that allow you to restart ful
 Uses upstream library [python-fullykiosk](https://github.com/cgarwood/python-fullykiosk)
 
 
-<a href="https://www.buymeacoffee.com/cgarwood" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 41px !important;" ></a>
+<a href="https://www.buymeacoffee.com/cgarwood" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/white_img.png" alt="Buy Me A Coffee"></a>
