@@ -2,7 +2,8 @@
 	"domain": "fullykiosk",
 	"name": "Fully Kiosk Browser",
 	"config_flow": true,
-	"documentation": "https://www.home-assistant.io/integrations/fullykiosk",
+	"documentation": "https://github.com/cgarwood/homeassistant-fullykiosk",
+	"issue_tracker": "https://github.com/cgarwood/homeassistant-fullykiosk/issues",
 	"requirements": [
 		"python-fullykiosk==0.0.8"
 	],
