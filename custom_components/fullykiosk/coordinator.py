@@ -1,5 +1,6 @@
 """Provides the The Fully Kiosk Browser DataUpdateCoordinator."""
 import logging
+import asyncio
 from datetime import timedelta
 
 from aiohttp import ClientSession
@@ -35,6 +36,10 @@ class FullyKioskDataUpdateCoordinator(DataUpdateCoordinator):
         """Update data via library."""
         try:
             with timeout(15):
-                return await self.fully.getDeviceInfo()
+                """Get device info and settings in parallel"""
+                result = await asyncio.gather(self.fully.getDeviceInfo(), self.fully.getSettings())
+                """Store settings under settings key in data"""
+                result[0]["settings"] = result[1]
+                return result[0]
         except (FullyKioskError, ClientConnectorError) as error:
             raise UpdateFailed(error) from error
