@@ -15,3 +15,5 @@ Uses upstream library [python-fullykiosk](https://github.com/cgarwood/python-ful
 
 
 <a href="https://www.buymeacoffee.com/cgarwood" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/white_img.png" alt="Buy Me A Coffee"></a>
+
+Please find a german installation and usage video including motion sensor by Tristan here: https://youtu.be/Zco-kKKgLY8
