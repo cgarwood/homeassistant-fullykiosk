@@ -64,7 +64,7 @@ class FullyBinarySensor(CoordinatorEntity, BinarySensorEntity):
             "manufacturer": self.coordinator.data["deviceManufacturer"],
             "model": self.coordinator.data["deviceModel"],
             "sw_version": self.coordinator.data["appVersionName"],
-            "configuration_url": f"http://{self.coordinatordata["ipaddress"]}:2323",
+            "configuration_url": f"http://{self.coordinator.data["ipaddress"]}:2323",
         }
 
     @property
