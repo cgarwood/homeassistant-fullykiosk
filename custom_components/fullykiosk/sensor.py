@@ -13,6 +13,7 @@ SENSOR_TYPES = {
     "batteryLevel": "Battery Level",
     "screenOrientation": "Screen Orientation",
     "foregroundApp": "Foreground App",
+    "backgroundApp": "Background App",
     "lastAppStart": "Last App Start",
     "wifiSignalLevel": "WiFi Signal Level",
     "currentPage": "Current Page",
