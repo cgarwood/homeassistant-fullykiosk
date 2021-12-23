@@ -97,7 +97,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     platform.async_register_entity_service(
         SERVICE_TO_FOREGROUND, {}, "async_fullykiosk_to_foreground"
     )
-    
+
     platform.async_register_entity_service(
         SERVICE_TO_BACKGROUND, {}, "async_fullykiosk_to_background"
     )
@@ -192,7 +192,7 @@ class FullyMediaPlayer(CoordinatorEntity, MediaPlayerEntity):
         """Bring the fullykiosk browser app back to the background."""
         await self.coordinator.fully.toBackground()
         await self.coordinator.async_refresh()
-        
+
     async def async_fullykiosk_to_foreground(self):
         """Bring the fullykiosk browser app back to the foreground."""
         await self.coordinator.fully.toForeground()
