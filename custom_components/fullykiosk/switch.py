@@ -140,6 +140,7 @@ class FullyKioskLockSwitch(FullySwitch):
         await self.coordinator.fully.unlockKiosk()
         await self.coordinator.async_refresh()
 
+
 class FullyKioskMotionDetectionSwitch(FullySwitch):
     """Representation of a Fully Kiosk Browser kiosk lock switch."""
 
