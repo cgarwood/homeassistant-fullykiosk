@@ -26,7 +26,11 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     """Set up the Fully Kiosk Browser sensor."""
     coordinator = hass.data[DOMAIN][config_entry.entry_id]
 
-    sensors = [FullyBinarySensor(coordinator, sensor) for sensor in SENSOR_TYPES]
+    sensors = [
+        FullyBinarySensor(coordinator, sensor)
+        for sensor in SENSOR_TYPES
+        if sensor.key in coordinator.data
+    ]
 
     async_add_entities(sensors, False)
 
@@ -36,6 +40,7 @@ class FullyBinarySensor(CoordinatorEntity, BinarySensorEntity):
 
     def __init__(self, coordinator, sensor):
         """Initialize the binary sensor."""
+        self.entity_description = sensor
         self._sensor = sensor.key
         self.coordinator = coordinator
 
@@ -49,7 +54,6 @@ class FullyBinarySensor(CoordinatorEntity, BinarySensorEntity):
             "sw_version": self.coordinator.data["appVersionName"],
             "configuration_url": f"http://{self.coordinator.data['ip4']}:2323",
         }
-        self._attr_device_class = sensor.device_class
 
     @property
     def is_on(self):
