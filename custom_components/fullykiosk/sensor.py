@@ -15,7 +15,7 @@ SENSOR_TYPES: tuple[SensorEntityDescription, ...] = (
         key="batteryLevel",
         name="Battery Level",
         device_class=SensorDeviceClass.BATTERY,
-        unit_of_measurement=PERCENTAGE,
+        native_unit_of_measurement=PERCENTAGE,
     ),
     SensorEntityDescription(key="screenOrientation", name="Screen Orientation"),
     SensorEntityDescription(
@@ -38,25 +38,25 @@ SENSOR_TYPES: tuple[SensorEntityDescription, ...] = (
         key="internalStorageFreeSpace",
         name="Internal Storage Free Space",
         entity_category=EntityCategory.DIAGNOSTIC,
-        unit_of_measurement=DATA_MEGABYTES,
+        native_unit_of_measurement=DATA_MEGABYTES,
     ),
     SensorEntityDescription(
         key="internalStorageTotalSpace",
         name="Internal Storage Total Space",
         entity_category=EntityCategory.DIAGNOSTIC,
-        unit_of_measurement=DATA_MEGABYTES,
+        native_unit_of_measurement=DATA_MEGABYTES,
     ),
     SensorEntityDescription(
         key="ramFreeMemory",
         name="RAM Free Memory",
         entity_category=EntityCategory.DIAGNOSTIC,
-        unit_of_measurement=DATA_MEGABYTES,
+        native_unit_of_measurement=DATA_MEGABYTES,
     ),
     SensorEntityDescription(
         key="ramTotalMemory",
         name="RAM Total Memory",
         entity_category=EntityCategory.DIAGNOSTIC,
-        unit_of_measurement=DATA_MEGABYTES,
+        native_unit_of_measurement=DATA_MEGABYTES,
     ),
 )
 
@@ -82,13 +82,12 @@ class FullySensor(CoordinatorEntity, SensorEntity):
 
     def __init__(self, coordinator, sensor: SensorEntityDescription):
         """Initialize the sensor entity."""
+        self.entity_description = sensor
         self._sensor = sensor.key
         self.coordinator = coordinator
 
         self._attr_name = f"{coordinator.data['deviceName']} {sensor.name}"
         self._attr_unique_id = f"{coordinator.data['deviceID']}-{sensor.key}"
-        self._attr_device_class = sensor.device_class
-        self._attr_unit_of_measurement = sensor.unit_of_measurement
         self._attr_device_info = {
             "identifiers": {(DOMAIN, self.coordinator.data["deviceID"])},
             "name": self.coordinator.data["deviceName"],
@@ -97,7 +96,6 @@ class FullySensor(CoordinatorEntity, SensorEntity):
             "sw_version": self.coordinator.data["appVersionName"],
             "configuration_url": f"http://{self.coordinator.data['ip4']}:2323",
         }
-        self._attr_entity_category = sensor.entity_category
 
     @property
     def state(self):
