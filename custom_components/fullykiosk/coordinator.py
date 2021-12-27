@@ -37,7 +37,9 @@ class FullyKioskDataUpdateCoordinator(DataUpdateCoordinator):
         try:
             with timeout(15):
                 """Get device info and settings in parallel"""
-                result = await asyncio.gather(self.fully.getDeviceInfo(), self.fully.getSettings())
+                result = await asyncio.gather(
+                    self.fully.getDeviceInfo(), self.fully.getSettings()
+                )
                 """Store settings under settings key in data"""
                 result[0]["settings"] = result[1]
                 return result[0]
