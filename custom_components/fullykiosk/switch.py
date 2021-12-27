@@ -44,6 +44,7 @@ class FullySwitch(CoordinatorEntity, SwitchEntity):
             "manufacturer": self.coordinator.data["deviceManufacturer"],
             "model": self.coordinator.data["deviceModel"],
             "sw_version": self.coordinator.data["appVersionName"],
+            "configuration_url": f"http://{self.coordinator.data['ip4']}:2323",
         }
 
     @property
