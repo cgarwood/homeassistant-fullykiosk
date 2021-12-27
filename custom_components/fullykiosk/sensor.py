@@ -72,7 +72,11 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     """Set up the Fully Kiosk Browser sensor."""
     coordinator = hass.data[DOMAIN][config_entry.entry_id]
 
-    sensors = [FullySensor(coordinator, sensor) for sensor in SENSOR_TYPES]
+    sensors = [
+        FullySensor(coordinator, sensor)
+        for sensor in SENSOR_TYPES
+        if sensor.key in coordinator.data
+    ]
 
     async_add_entities(sensors, False)
 
