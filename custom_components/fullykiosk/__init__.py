@@ -14,7 +14,7 @@ from .coordinator import FullyKioskDataUpdateCoordinator
 
 CONFIG_SCHEMA = vol.Schema({DOMAIN: vol.Schema({})}, extra=vol.ALLOW_EXTRA)
 
-PLATFORMS = ["binary_sensor", "light", "media_player", "sensor", "switch"]
+PLATFORMS = ["binary_sensor", "light", "media_player", "number", "sensor", "switch"]
 
 _LOGGER = logging.getLogger(__name__)
 
