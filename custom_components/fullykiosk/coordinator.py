@@ -1,6 +1,6 @@
 """Provides the The Fully Kiosk Browser DataUpdateCoordinator."""
-import logging
 import asyncio
+import logging
 from datetime import timedelta
 
 from aiohttp import ClientSession
