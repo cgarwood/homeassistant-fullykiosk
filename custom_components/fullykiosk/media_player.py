@@ -29,6 +29,7 @@ from .const import (
     SERVICE_RESTART_APP,
     SERVICE_SET_CONFIG,
     SERVICE_START_APPLICATION,
+    SERVICE_TO_BACKGROUND,
     SERVICE_TO_FOREGROUND,
 )
 
@@ -95,6 +96,10 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 
     platform.async_register_entity_service(
         SERVICE_TO_FOREGROUND, {}, "async_fullykiosk_to_foreground"
+    )
+
+    platform.async_register_entity_service(
+        SERVICE_TO_BACKGROUND, {}, "async_fullykiosk_to_background"
     )
 
     async_add_entities([FullyMediaPlayer(coordinator)], False)
@@ -182,6 +187,11 @@ class FullyMediaPlayer(CoordinatorEntity, MediaPlayerEntity):
     async def async_fullykiosk_start_app(self, application):
         """Start an application on the device running the fullykiosk browser app."""
         await self.coordinator.fully.startApplication(application)
+        await self.coordinator.async_refresh()
+
+    async def async_fullykiosk_to_background(self):
+        """Bring the fullykiosk browser app back to the background."""
+        await self.coordinator.fully.toBackground()
         await self.coordinator.async_refresh()
 
     async def async_fullykiosk_to_foreground(self):
