@@ -58,7 +58,7 @@ class FullyNumberEntity(CoordinatorEntity, NumberEntity):
             "configuration_url": f"http://{self.coordinator.data['ip4']}:2323",
         }
 
-        # Min, max, and step are not available in EntityDescription until HA 2021.2 release.
+        # Min, max, and step are not available in EntityDescription until HA 2022.2 release.
         self._attr_step = 1
         self._attr_min_value = 0
 
