@@ -110,7 +110,7 @@ class FullySensor(CoordinatorEntity, SensorEntity):
         if self._sensor in STORAGE_SENSORS:
             return round(self.coordinator.data[self._sensor] * 0.000001, 1)
 
-        return self.coordinator.data[self._sensor]
+        return self.coordinator.data.get(self._sensor)
 
     async def async_added_to_hass(self):
         """Connect to dispatcher listening for entity data notifications."""
