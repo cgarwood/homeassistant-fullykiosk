@@ -151,6 +151,9 @@ class FullyMediaPlayer(CoordinatorEntity, MediaPlayerEntity):
 
     async def async_fullykiosk_load_start_url(self):
         """Load the start URL on a fullykiosk browser."""
+        _LOGGER.warning(
+            "The fullykiosk.load_start_url service is deprecated and will be removed in a future update. Use the corresponding button entity instead."
+        )
         await self.coordinator.fully.loadStartUrl()
         await self.coordinator.async_refresh()
 
@@ -165,13 +168,17 @@ class FullyMediaPlayer(CoordinatorEntity, MediaPlayerEntity):
 
     async def async_fullykiosk_reboot_device(self):
         """Reboot the device running the fullykiosk browser app."""
+        _LOGGER.warning(
+            "The fullykiosk.reboot_device service is deprecated and will be removed in a future update. Use the corresponding button entity instead."
+        )
         await self.coordinator.fully.rebootDevice()
-        await self.coordinator.async_refresh()
 
     async def async_fullykiosk_restart(self):
         """Restart the fullykiosk browser app."""
+        _LOGGER.warning(
+            "The fullykiosk.restart service is deprecated and will be removed in a future update. Use the corresponding button entity instead."
+        )
         await self.coordinator.fully.restartApp()
-        await self.coordinator.async_refresh()
 
     async def async_fullykiosk_set_config(self, config_type, key, value):
         """Set fullykiosk configuration value."""
@@ -191,11 +198,17 @@ class FullyMediaPlayer(CoordinatorEntity, MediaPlayerEntity):
 
     async def async_fullykiosk_to_background(self):
         """Bring the fullykiosk browser app back to the background."""
+        _LOGGER.warning(
+            "The fullykiosk.to_background service is deprecated and will be removed in a future update. Use the corresponding button entity instead."
+        )
         await self.coordinator.fully.toBackground()
         await self.coordinator.async_refresh()
 
     async def async_fullykiosk_to_foreground(self):
         """Bring the fullykiosk browser app back to the foreground."""
+        _LOGGER.warning(
+            "The fullykiosk.to_foreground service is deprecated and will be removed in a future update. Use the corresponding button entity instead."
+        )
         await self.coordinator.fully.toForeground()
         await self.coordinator.async_refresh()
 
