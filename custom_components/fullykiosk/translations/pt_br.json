@@ -1,0 +1,23 @@
+{
+	"config": {
+		"title": "Fully Kiosk Browser",
+		"step": {
+			"user": {
+				"title": "Conecte-se ao dispositivo",
+				"data": {
+					"host": "IP/Host",
+					"port": "Porta",
+					"password": "Senha de administração remota"
+				}
+			}
+		},
+		"error": {
+			"cannot_connect": "Falha ao conectar, tente novamente",
+			"invalid_auth": "Autenticação inválida",
+			"unknown": "Erro inesperado"
+		},
+		"abort": {
+			"already_configured": "O dispositivo já está configurado"
+		}
+	}
+}
