@@ -53,7 +53,9 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     )
 
     platform.async_register_entity_service(
-        SERVICE_LOAD_URL, {vol.Required(ATTR_URL): cv.url}, "async_fullykiosk_load_url"
+        SERVICE_LOAD_URL,
+        {vol.Required(ATTR_URL): cv.string},
+        "async_fullykiosk_load_url",
     )
 
     platform.async_register_entity_service(
