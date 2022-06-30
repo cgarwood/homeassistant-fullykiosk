@@ -59,13 +59,13 @@ class FullyNumberEntity(CoordinatorEntity, NumberEntity):
         }
 
         # Min, max, and step are not available in EntityDescription until HA 2022.2 release.
-        self._attr_step = 1
-        self._attr_min_value = 0
+        self._attr_native_step = 1
+        self._attr_native_min_value = 0
 
         if self._key in ["timeToScreensaverV2", "timeToScreenOffV2"]:
-            self._attr_max_value = 9999
+            self._attr_native_max_value = 9999
         if self._key == "screensaverBrightness":
-            self._attr_max_value = 255
+            self._attr_native_max_value = 255
 
     @property
     def state(self):
@@ -85,6 +85,6 @@ class FullyNumberEntity(CoordinatorEntity, NumberEntity):
         """Update Fully Kiosk Browser entity."""
         await self.coordinator.async_request_refresh()
 
-    async def async_set_value(self, value):
+    async def async_set_native_value(self, value):
         """Set the value of the entity."""
         await self.coordinator.fully.setConfigurationString(self._key, int(value))
