@@ -1,5 +1,4 @@
 """Fully Kiosk Browser sensor."""
-from dateutil import parser
 from homeassistant.components.sensor import (
     SensorDeviceClass,
     SensorEntity,
@@ -109,10 +108,6 @@ class FullySensor(CoordinatorEntity, SensorEntity):
 
         if self._sensor in STORAGE_SENSORS:
             return round(self.coordinator.data[self._sensor] * 0.000001, 1)
-
-        if self._sensor == "lastAppStart":
-            time = parser.parse(self.coordinator.data[self._sensor])
-            return time
 
         return self.coordinator.data.get(self._sensor)
 
