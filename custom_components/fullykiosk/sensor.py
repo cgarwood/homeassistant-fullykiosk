@@ -26,7 +26,6 @@ SENSOR_TYPES: tuple[SensorEntityDescription, ...] = (
     SensorEntityDescription(
         key="lastAppStart",
         name="Last App Start",
-        device_class=SensorDeviceClass.TIMESTAMP,
     ),
     SensorEntityDescription(key="currentPage", name="Current Page"),
     SensorEntityDescription(
