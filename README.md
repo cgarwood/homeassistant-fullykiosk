@@ -1,3 +1,7 @@
+# This is now a Home Assistant core integration
+This integration is now part of the Home Assistant core, and this repository is now archived. Documentation on the core integration are available at https://www.home-assistant.io/integrations/fully_kiosk/
+
+
 # Fully Kiosk Browser integration for Home Assistant
 
 Provides support for controlling some common Fully Kiosk options through Home Assistant. Requires Remote Administration to be enabled in the Fully Kiosk Browser settings.
